@@ -1,0 +1,32 @@
+{
+  "title": "AgentPay Setup Guide",
+  "steps": [
+    {
+      "step": 1,
+      "title": "Get Your MetaMask Address",
+      "description": "Copy your MetaMask wallet address and set it as PAYEE_ADDRESS"
+    },
+    {
+      "step": 2,
+      "title": "Get RPC URLs from Alchemy",
+      "description": "Sign up at alchemy.com, create projects for Ethereum and Polygon, copy the HTTPS URLs"
+    },
+    {
+      "step": 3,
+      "title": "Test on Polygon First",
+      "description": "Start with Polygon for low fees. Send a small USDC amount to test detection"
+    },
+    {
+      "step": 4,
+      "title": "Set Up Webhook Endpoint",
+      "description": "Create a simple endpoint at /webhook/delivery to receive payment notifications"
+    },
+    {
+      "step": 5,
+      "title": "Run the Watcher",
+      "description": "Start the payment watcher: npm run watch-payments"
+    }
+  ],
+  "required_keys": ["PAYEE_ADDRESS", "POLYGON_RPC_URL", "CONFIRMATIONS_REQUIRED", "AGENT_DELIVERY_URL"],
+  "optional_keys": ["ETHEREUM_RPC_URL", "BSC_RPC_URL", "AVALANCHE_RPC_URL", "OPENAI_API_KEY"]
+}
