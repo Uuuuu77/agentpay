@@ -4,8 +4,6 @@
   "private": true,
   "description": "Autonomous freelancer agent platform with crypto payments",
   "scripts": {
-    "backend": "node backend/server.js",
-    "backend:dev": "nodemon backend/server.js",
     "build": "next build",
     "compile": "hardhat compile",
     "deploy": "hardhat run scripts/deploy.js",
@@ -23,6 +21,8 @@
     "@nomicfoundation/hardhat-verify": "latest",
     "@radix-ui/react-checkbox": "latest",
     "@radix-ui/react-dialog": "^1.0.0",
+    "@radix-ui/react-dropdown-menu": "^2.0.0",
+    "@radix-ui/react-label": "^2.0.0",
     "@radix-ui/react-select": "^2.0.0",
     "@radix-ui/react-tabs": "latest",
     "@radix-ui/react-toast": "^1.1.0",
@@ -69,23 +69,19 @@
     "viem": "latest",
     "wagmi": "latest",
     "ws": "latest",
-    "zod": "latest"
+    "zod": "^3.22.0"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-ethers": "^3.0.0",
     "@nomicfoundation/hardhat-toolbox": "^4.0.0",
     "@openzeppelin/contracts": "^5.0.0",
-    "@types/cors": "^2.8.0",
-    "@types/express": "^4.17.0",
     "@types/node": "^22",
     "@types/qrcode": "^1.5.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@types/uuid": "^9.0.0",
     "eslint": "^8.0.0",
     "eslint-config-next": "^14.0.0",
     "hardhat": "^2.19.0",
-    "nodemon": "^3.0.0",
     "postcss": "^8.5",
     "typescript": "^5"
   }
