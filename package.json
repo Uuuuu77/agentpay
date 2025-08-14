@@ -13,6 +13,7 @@
     "test": "hardhat test"
   },
   "dependencies": {
+    "@ai-sdk/groq": "latest",
     "@google/generative-ai": "latest",
     "@neondatabase/serverless": "latest",
     "@nomicfoundation/hardhat-chai-matchers": "latest",
@@ -36,6 +37,7 @@
     "@types/react-dom": "^18.0.0",
     "@wagmi/connectors": "^4.0.0",
     "@wagmi/core": "^2.0.0",
+    "ai": "latest",
     "axios": "latest",
     "chai": "latest",
     "class-variance-authority": "^0.7.1",

@@ -1,5 +1,6 @@
 import type { FileStorageService } from "./file-storage"
 import type { Invoice } from "../../types"
+import { generateWithGroq, generateCreativeContent, AI_CONFIG } from "../../lib/ai-services"
 
 interface PromptServiceRequest {
   invoice: Invoice
@@ -26,19 +27,11 @@ export class PromptService {
     console.log(`Generating optimized prompts for ${targetModel}: ${description}`)
 
     try {
-      // Generate optimized prompts
       const prompts = await this.generateOptimizedPrompts(description, targetModel, iterations)
-
-      // Generate example outputs
       const examples = await this.generateExampleOutputs(prompts, targetModel)
-
-      // Generate usage guide
       const usageGuide = await this.generateUsageGuide(description, targetModel)
-
-      // Generate parameter recommendations
       const parameterGuide = await this.generateParameterGuide(targetModel)
 
-      // Create deliverable files
       const files = [
         {
           filename: "optimized-prompts.md",
@@ -74,19 +67,65 @@ export class PromptService {
     targetModel: string,
     iterations: number,
   ): Promise<string[]> {
-    const prompts: string[] = []
+    const promptEngineeringPrompt = `You are an expert prompt engineer. Create ${iterations} highly optimized prompts for ${targetModel} to accomplish: ${description}
 
-    // Base prompt
+Requirements for each prompt:
+1. Clear, specific instructions
+2. Appropriate context and constraints
+3. Expected output format specification
+4. Role-based framing when beneficial
+5. Examples or templates where helpful
+
+Each prompt should be distinct in approach:
+- Prompt 1: Direct and concise approach
+- Prompt 2: Detailed expert consultation style
+- Prompt 3: Step-by-step structured approach
+${iterations > 3 ? "- Additional prompts: Creative variations with different angles" : ""}
+
+Return each prompt clearly separated and numbered.`
+
+    try {
+      const aiPrompts = await generateWithGroq(promptEngineeringPrompt, "llama")
+
+      if (aiPrompts && aiPrompts.length > 500) {
+        // Parse AI-generated prompts
+        const parsedPrompts = this.parseAIPrompts(aiPrompts, iterations)
+        if (parsedPrompts.length >= iterations) {
+          return parsedPrompts.slice(0, iterations)
+        }
+      }
+    } catch (error) {
+      console.error("AI prompt generation failed, using templates:", error)
+    }
+
+    // Fallback to template-based generation
+    const prompts: string[] = []
     const basePrompt = this.createBasePrompt(description, targetModel)
     prompts.push(basePrompt)
 
-    // Generate variations
     for (let i = 1; i < iterations; i++) {
       const variation = this.createPromptVariation(basePrompt, i, targetModel)
       prompts.push(variation)
     }
 
     return prompts
+  }
+
+  private parseAIPrompts(aiResponse: string, expectedCount: number): string[] {
+    // Parse AI-generated prompts from the response
+    const prompts: string[] = []
+
+    // Split by common prompt separators
+    const sections = aiResponse.split(/(?:Prompt \d+:|## Prompt \d+|### Prompt \d+|\d+\.|---)/i)
+
+    for (const section of sections) {
+      const cleaned = section.trim()
+      if (cleaned.length > 100 && !cleaned.toLowerCase().includes("prompt engineer")) {
+        prompts.push(cleaned)
+      }
+    }
+
+    return prompts.filter((p) => p.length > 50).slice(0, expectedCount)
   }
 
   private createBasePrompt(description: string, targetModel: string): string {
@@ -178,6 +217,30 @@ Note: This is a demonstration. Actual outputs will vary based on your specific u
   }
 
   private async generateUsageGuide(description: string, targetModel: string): Promise<string> {
+    const prompt = `Create a comprehensive usage guide for optimized prompts designed for: ${description}
+
+Target Model: ${targetModel}
+
+Include:
+- Best practices for prompt selection
+- Customization tips and techniques
+- Parameter recommendations specific to ${targetModel}
+- Common troubleshooting scenarios
+- Advanced usage patterns
+- Performance optimization tips
+
+Format as professional markdown documentation.`
+
+    try {
+      const aiGuide = await generateCreativeContent(prompt, "technical guide")
+      if (aiGuide && aiGuide.length > 500) {
+        return aiGuide
+      }
+    } catch (error) {
+      console.error("AI usage guide generation failed:", error)
+    }
+
+    // Fallback to template guide
     return `# Usage Guide
 
 ## Overview
@@ -200,40 +263,18 @@ This guide explains how to effectively use the optimized prompts for: ${descript
 ### 3. Parameter Recommendations
 ${this.getParameterRecommendations(targetModel)}
 
-### 4. Common Modifications
-- **For shorter responses**: Add "Please provide a concise summary"
-- **For more detail**: Add "Please provide comprehensive details with examples"
-- **For specific format**: Add "Please format your response as [bullets/numbered list/table]"
-
-## Troubleshooting
-
-### If responses are too generic:
-- Add more specific context to your prompt
-- Include examples of what you're looking for
-- Specify the desired output format
-
-### If responses are too long:
-- Add length constraints to your prompt
-- Request bullet points or summaries
-- Focus on specific aspects rather than broad topics
-
-### If responses miss key points:
-- Explicitly list the points you want covered
-- Use numbered requirements
-- Provide examples of good responses
+### 4. Groq Model Recommendations
+For enhanced performance, consider using Groq models:
+- **${AI_CONFIG.groq.models.llama}**: Excellent for creative and analytical tasks
+- **${AI_CONFIG.groq.models.mixtral}**: Superior for technical and structured content
+- **${AI_CONFIG.groq.models.gemma}**: Fast responses for simple queries
 
 ## Advanced Usage
 
-### Chaining Prompts
-For complex tasks, consider using multiple prompts in sequence:
-1. Use Prompt 1 for initial analysis
-2. Use Prompt 2 for detailed exploration
-3. Use Prompt 3 for implementation guidance
-
-### Context Management
-- Keep conversations focused on the specific topic
-- Provide relevant background information
-- Reference previous responses when building on ideas
+### Multi-Model Strategy
+1. Use Groq models for initial rapid prototyping
+2. Refine with ${targetModel} for final outputs
+3. Compare results across different models
 
 Generated: ${new Date().toLocaleString()}
 `
