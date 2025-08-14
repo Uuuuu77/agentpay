@@ -13,9 +13,9 @@
     "test": "hardhat test"
   },
   "dependencies": {
-    "@ai-sdk/google": "^0.0.48",
+    "@ai-sdk/google": "0.0.48",
     "@ai-sdk/groq": "latest",
-    "@ai-sdk/openai": "^0.0.54",
+    "@ai-sdk/openai": "0.0.54",
     "@google/generative-ai": "latest",
     "@neondatabase/serverless": "latest",
     "@nomicfoundation/hardhat-chai-matchers": "latest",
@@ -73,7 +73,7 @@
     "viem": "latest",
     "wagmi": "latest",
     "ws": "latest",
-    "zod": "^3.22.4"
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-ethers": "^3.0.0",
