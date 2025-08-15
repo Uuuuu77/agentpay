@@ -1,12 +1,18 @@
 import { neon } from "@neondatabase/serverless"
+import { ServiceProcessor } from "@/backend/services/service-processor"
+import { DatabaseManager } from "@/backend/database"
+import { WebhookManager } from "@/backend/webhook-manager"
 
 const sql = neon(process.env.DATABASE_URL!)
 
 export class DeliveryEngine {
+  private serviceProcessor: ServiceProcessor
   private isRunning = false
 
   constructor() {
-    // Simplified constructor without SQLite dependencies for build
+    const dbManager = new DatabaseManager()
+    const webhookManager = new WebhookManager()
+    this.serviceProcessor = new ServiceProcessor(dbManager, webhookManager)
   }
 
   async start(): Promise<void> {
@@ -63,12 +69,11 @@ export class DeliveryEngine {
       for (const invoice of pendingInvoices) {
         try {
           console.log(`[v0] Processing invoice ${invoice.invoice_id}`)
-          // Simplified processing without SQLite dependencies
-          await this.processSimpleInvoice(invoice)
+          await this.serviceProcessor.processInvoice(invoice)
         } catch (error) {
           console.error(`[v0] Failed to process invoice ${invoice.invoice_id}:`, error)
 
-          // Mark invoice as failed
+          // Mark invoice as failed (you might want to add a FAILED status)
           await sql`
             UPDATE invoices 
             SET 
@@ -83,19 +88,6 @@ export class DeliveryEngine {
     }
   }
 
-  private async processSimpleInvoice(invoice: any): Promise<void> {
-    // Simplified invoice processing that doesn't require SQLite
-    await sql`
-      UPDATE invoices 
-      SET 
-        status = 'IN_PROGRESS',
-        updated_at = NOW()
-      WHERE invoice_id = ${invoice.invoice_id}
-    `
-    
-    console.log(`[v0] Marked invoice ${invoice.invoice_id} as in progress`)
-  }
-
   async processInvoice(invoiceId: string): Promise<void> {
     try {
       const invoiceResult = await sql`
@@ -107,7 +99,7 @@ export class DeliveryEngine {
       }
 
       const invoice = invoiceResult[0]
-      await this.processSimpleInvoice(invoice)
+      await this.serviceProcessor.processInvoice(invoice)
     } catch (error) {
       console.error(`[v0] Failed to process invoice ${invoiceId}:`, error)
       throw error

@@ -9,18 +9,14 @@ import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { ProtectedRoute } from "@/components/auth/protected-route"
-import { ClientOnlyWrapper } from "@/components/auth/client-only-wrapper"
 import { Search, Download, ExternalLink, RefreshCw } from "lucide-react"
 import axios from "axios"
 import type { Invoice } from "@/types"
 
-// Force dynamic rendering to avoid build-time errors
-export const dynamic = 'force-dynamic'
-
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "/api"
 
-function UserOrdersPageContent() {
-  const { data: session, status } = useSession()
+export default function OrdersPage() {
+  const { data: session } = useSession()
   const [orders, setOrders] = useState<Invoice[]>([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState("")
@@ -43,11 +39,6 @@ function UserOrdersPageContent() {
       fetchOrders()
     }
   }, [session])
-
-  // Don't render content during initial loading or if session is being checked
-  if (status === "loading" || !session) {
-    return null
-  }
 
   const filteredOrders = orders.filter((order) => {
     const matchesSearch =
@@ -188,7 +179,7 @@ function UserOrdersPageContent() {
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <div>
-                      <CardTitle className="text-lg">{order.serviceType}</CardTitle>
+                      <CardTitle className="text-lg">{order.service?.name || order.serviceType}</CardTitle>
                       <CardDescription className="mt-1">{order.description}</CardDescription>
                     </div>
                     <Badge className={getStatusColor(order.status)}>{order.status}</Badge>
@@ -198,7 +189,7 @@ function UserOrdersPageContent() {
                   <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm mb-4">
                     <div>
                       <span className="font-medium text-muted-foreground">Amount:</span>
-                      <p className="font-semibold">${order.amount}</p>
+                      <p className="font-semibold">${order.displayAmount}</p>
                     </div>
                     <div>
                       <span className="font-medium text-muted-foreground">Chain:</span>
@@ -251,13 +242,5 @@ function UserOrdersPageContent() {
         )}
       </div>
     </ProtectedRoute>
-  )
-}
-
-export default function UserOrdersPage() {
-  return (
-    <ClientOnlyWrapper>
-      <UserOrdersPageContent />
-    </ClientOnlyWrapper>
   )
 }

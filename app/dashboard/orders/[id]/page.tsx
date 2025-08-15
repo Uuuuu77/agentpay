@@ -7,17 +7,13 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { ProtectedRoute } from "@/components/auth/protected-route"
-import { ClientOnlyWrapper } from "@/components/auth/client-only-wrapper"
 import { ArrowLeft, Download, ExternalLink, Clock, CheckCircle, AlertCircle, Copy } from "lucide-react"
 import axios from "axios"
 import type { Invoice } from "@/types"
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "/api"
 
-// Force dynamic rendering
-export const dynamic = 'force-dynamic'
-
-function OrderDetailsPageContent() {
+export default function OrderDetailsPage() {
   const params = useParams()
   const router = useRouter()
   const { data: session } = useSession()
@@ -133,7 +129,7 @@ function OrderDetailsPageContent() {
               <CardHeader>
                 <div className="flex items-start justify-between">
                   <div>
-                    <CardTitle className="text-xl">{order.serviceType}</CardTitle>
+                    <CardTitle className="text-xl">{order.service?.name || order.serviceType}</CardTitle>
                     <CardDescription className="mt-2">{order.description}</CardDescription>
                   </div>
                   <div className="flex items-center gap-2">
@@ -150,7 +146,7 @@ function OrderDetailsPageContent() {
                   </div>
                   <div>
                     <span className="font-medium text-muted-foreground">Amount:</span>
-                    <p className="font-semibold text-lg">${order.amount}</p>
+                    <p className="font-semibold text-lg">${order.displayAmount}</p>
                   </div>
                   <div>
                     <span className="font-medium text-muted-foreground">Chain:</span>
@@ -175,9 +171,9 @@ function OrderDetailsPageContent() {
                     <span className="font-medium text-muted-foreground">Payment Address:</span>
                     <div className="flex items-center gap-2 mt-1">
                       <code className="bg-muted px-2 py-1 rounded text-xs">
-                        {order.payee?.slice(0, 20)}...
+                        {order.paymentAddress?.slice(0, 20)}...
                       </code>
-                      <Button size="sm" variant="ghost" onClick={() => copyToClipboard(order.payee || "")}>
+                      <Button size="sm" variant="ghost" onClick={() => copyToClipboard(order.paymentAddress || "")}>
                         <Copy className="h-3 w-3" />
                       </Button>
                     </div>
@@ -303,13 +299,5 @@ function OrderDetailsPageContent() {
         </div>
       </div>
     </ProtectedRoute>
-  )
-}
-
-export default function OrderDetailsPage() {
-  return (
-    <ClientOnlyWrapper>
-      <OrderDetailsPageContent />
-    </ClientOnlyWrapper>
   )
 }
