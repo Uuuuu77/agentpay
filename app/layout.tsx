@@ -4,7 +4,7 @@ import { GeistSans } from "geist/font/sans"
 import { GeistMono } from "geist/font/mono"
 import "./globals.css"
 import { Web3Provider } from "@/components/providers/web3-provider"
-import { Header } from "@/components/layout/header"
+import { DynamicHeader } from "@/components/layout/dynamic-header"
 
 export const metadata: Metadata = {
   title: "AgentPay - Autonomous Freelancer Agent Platform",
@@ -55,7 +55,7 @@ html {
       </head>
       <body>
         <Web3Provider>
-          <Header />
+          <DynamicHeader />
           <main className="min-h-screen">{children}</main>
         </Web3Provider>
         <script

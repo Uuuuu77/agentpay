@@ -17,7 +17,11 @@ import { User, LogOut, Settings, FileText } from "lucide-react"
 
 export function Header() {
   const { isConnected } = useAccount()
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
+
+  // Handle loading and error states gracefully
+  const isLoading = status === "loading"
+  const isAuthenticated = status === "authenticated" && session?.user
 
   return (
     <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -34,7 +38,7 @@ export function Header() {
             <Link href="/services" className="text-sm font-medium hover:text-primary transition-colors">
               Services
             </Link>
-            {session?.user && (
+            {isAuthenticated && (
               <Link href="/dashboard" className="text-sm font-medium hover:text-primary transition-colors">
                 Dashboard
               </Link>
@@ -52,7 +56,9 @@ export function Header() {
           {isConnected && <ChainSelector />}
           <WalletConnectButton />
 
-          {session?.user ? (
+          {isLoading ? (
+            <div className="w-8 h-8 rounded bg-gray-200 animate-pulse" />
+          ) : isAuthenticated ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="sm" className="flex items-center gap-2">

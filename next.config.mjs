@@ -1,8 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    serverComponentsExternalPackages: ['@neondatabase/serverless']
-  },
+  serverExternalPackages: ['@neondatabase/serverless'],
   images: {
     unoptimized: true
   },
@@ -11,7 +9,10 @@ const nextConfig = {
   },
   eslint: {
     ignoreDuringBuilds: true
-  }
+  },
+  output: 'standalone',
+  skipTrailingSlashRedirect: true,
+  skipMiddlewareUrlNormalize: true
 }
 
 export default nextConfig

@@ -7,9 +7,13 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { ProtectedRoute } from "@/components/auth/protected-route"
+import { ClientOnlyWrapper } from "@/components/auth/client-only-wrapper"
 import { CheckCircle, XCircle, AlertTriangle, Eye, Download } from "lucide-react"
 import axios from "axios"
 import type { Invoice } from "@/types"
+
+// Force dynamic rendering
+export const dynamic = 'force-dynamic'
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "/api"
 
@@ -22,8 +26,14 @@ interface QualityReview {
   reviewedAt?: string
 }
 
-export default function QualityControlPage() {
-  const { data: session } = useSession()
+function AdminQualityPageContent() {
+  const { data: session, status } = useSession()
+
+  // Handle loading and authentication states
+  if (status === "loading" || !session) {
+    return null
+  }
+
   const [pendingOrders, setPendingOrders] = useState<Invoice[]>([])
   const [loading, setLoading] = useState(true)
   const [reviewNotes, setReviewNotes] = useState<Record<string, string>>({})
@@ -145,7 +155,7 @@ export default function QualityControlPage() {
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <div>
-                      <CardTitle className="text-lg">{order.service?.name || order.serviceType}</CardTitle>
+                      <CardTitle className="text-lg">{order.serviceType}</CardTitle>
                       <CardDescription className="mt-1">{order.description}</CardDescription>
                     </div>
                     <Badge className="bg-yellow-100 text-yellow-800">Pending Review</Badge>
@@ -156,7 +166,7 @@ export default function QualityControlPage() {
                   <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
                     <div>
                       <span className="font-medium text-muted-foreground">Amount:</span>
-                      <p className="font-semibold">${order.displayAmount}</p>
+                      <p className="font-semibold">${order.amount}</p>
                     </div>
                     <div>
                       <span className="font-medium text-muted-foreground">Service Type:</span>
@@ -164,7 +174,7 @@ export default function QualityControlPage() {
                     </div>
                     <div>
                       <span className="font-medium text-muted-foreground">Completed:</span>
-                      <p>{order.deliveredAt ? new Date(order.deliveredAt).toLocaleDateString() : "N/A"}</p>
+                      <p>{order.status === "DELIVERED" && order.paidAt ? new Date(order.paidAt * 1000).toLocaleDateString() : "N/A"}</p>
                     </div>
                     <div>
                       <span className="font-medium text-muted-foreground">Order ID:</span>
@@ -237,5 +247,13 @@ export default function QualityControlPage() {
         )}
       </div>
     </ProtectedRoute>
+  )
+}
+
+export default function AdminQualityPage() {
+  return (
+    <ClientOnlyWrapper>
+      <AdminQualityPageContent />
+    </ClientOnlyWrapper>
   )
 }

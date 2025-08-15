@@ -1,8 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { neon } from "@neondatabase/serverless"
-import { ServiceProcessor } from "@/backend/services/service-processor"
-import { DatabaseManager } from "@/backend/database"
-import { WebhookManager } from "@/backend/webhook-manager"
 
 const sql = neon(process.env.DATABASE_URL!)
 
@@ -50,18 +47,20 @@ export async function POST(request: NextRequest) {
 
     const invoice = invoiceResult[0]
 
-    // Initialize service processor
-    const dbManager = new DatabaseManager()
-    const webhookManager = new WebhookManager()
-    const serviceProcessor = new ServiceProcessor(dbManager, webhookManager)
-
-    // Process the service delivery asynchronously
+    // Simplified processing without SQLite dependencies
     setImmediate(async () => {
       try {
-        await serviceProcessor.processInvoice(invoice)
-        console.log(`[v0] Service processing completed for invoice ${invoiceId}`)
+        // Mark invoice as in progress for delivery
+        await sql`
+          UPDATE invoices 
+          SET 
+            status = 'IN_PROGRESS',
+            updated_at = NOW()
+          WHERE invoice_id = ${invoiceId}
+        `
+        console.log(`[v0] Invoice ${invoiceId} marked for processing`)
       } catch (error) {
-        console.error(`[v0] Service processing failed for invoice ${invoiceId}:`, error)
+        console.error(`[v0] Failed to update invoice ${invoiceId}:`, error)
       }
     })
 
