@@ -17,7 +17,7 @@ export const wagmiConfig = createConfig({
       metadata: {
         name: "AgentPay",
         description: "Autonomous freelancer agent platform",
-        url: "https://agentpay.app",
+        url: process.env.NEXT_PUBLIC_SITE_URL || "https://v0-agent-pay.vercel.app",
         icons: ["/logo.png"],
       },
     }),

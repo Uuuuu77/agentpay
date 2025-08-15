@@ -5,12 +5,7 @@ const DYNAMIC_CACHE = "agentpay-dynamic-v1.0.0"
 // Assets to cache on install
 const STATIC_ASSETS = [
   "/",
-  "/services",
-  "/dashboard",
-  "/auth/signin",
   "/manifest.json",
-  "/icons/icon-192x192.png",
-  "/icons/icon-512x512.png",
 ]
 
 // API routes to cache dynamically

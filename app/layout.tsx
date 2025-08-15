@@ -4,6 +4,7 @@ import { GeistSans } from "geist/font/sans"
 import { GeistMono } from "geist/font/mono"
 import "./globals.css"
 import { Web3Provider } from "@/components/providers/web3-provider"
+import { AuthProvider } from "@/components/auth/auth-provider"
 import { DynamicHeader } from "@/components/layout/dynamic-header"
 
 export const metadata: Metadata = {
@@ -54,10 +55,12 @@ html {
         `}</style>
       </head>
       <body>
-        <Web3Provider>
-          <DynamicHeader />
-          <main className="min-h-screen">{children}</main>
-        </Web3Provider>
+        <AuthProvider>
+          <Web3Provider>
+            <DynamicHeader />
+            <main className="min-h-screen">{children}</main>
+          </Web3Provider>
+        </AuthProvider>
         <script
           dangerouslySetInnerHTML={{
             __html: `
