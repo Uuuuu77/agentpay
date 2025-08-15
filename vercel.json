@@ -37,6 +37,14 @@
         {
           "key": "Access-Control-Allow-Headers",
           "value": "Content-Type, Authorization"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
         }
       ]
     }
@@ -53,6 +61,12 @@
     },
     "app/api/services/generate/route.ts": {
       "maxDuration": 300
+    },
+    "app/api/webhooks/payment-confirmed/route.ts": {
+      "maxDuration": 300
+    },
+    "app/api/admin/stats/route.ts": {
+      "maxDuration": 60
     }
   }
 }
