@@ -4,10 +4,9 @@ import { neon } from "@neondatabase/serverless"
 
 const sql = neon(process.env.DATABASE_URL!)
 
-// Chain configurations
 const CHAINS = {
   ethereum: {
-    rpc: process.env.ETHEREUM_RPC_URL || `https://eth-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
+    rpc: `https://eth-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
     confirmations: 12,
     tokens: {
       USDC: "0xA0b86a33E6441b8C4505E2c52C6b6046d4c8C6b8",
@@ -15,11 +14,35 @@ const CHAINS = {
     },
   },
   polygon: {
-    rpc: process.env.POLYGON_RPC_URL || `https://polygon-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
+    rpc: `https://polygon-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
     confirmations: 20,
     tokens: {
       USDC: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
       USDT: "0xc2132D05D31c914a87C6611C10748AEb04B58e8F",
+    },
+  },
+  bsc: {
+    rpc: `https://bnb-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
+    confirmations: 15,
+    tokens: {
+      USDC: "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
+      USDT: "0x55d398326f99059fF775485246999027B3197955",
+    },
+  },
+  avalanche: {
+    rpc: `https://avax-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
+    confirmations: 10,
+    tokens: {
+      USDC: "0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E",
+      USDT: "0x9702230A8Ea53601f5cD2dc00fDBc13d4dF4A8c7",
+    },
+  },
+  base: {
+    rpc: `https://base-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
+    confirmations: 10,
+    tokens: {
+      USDC: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+      USDT: "0xfde4C96c8593536E31F229EA8f37b2ADa2699bb2",
     },
   },
 }
@@ -75,7 +98,7 @@ export async function POST(request: NextRequest) {
             txHash: event.transactionHash,
             from: from,
             to: to,
-            amount: ethers.formatUnits(value, chain === "ethereum" ? 6 : 6), // Both USDT contracts use 6 decimals
+            amount: ethers.formatUnits(value, 6), // Both USDT contracts use 6 decimals
             token: "USDT",
             chain: chain,
             blockNumber: event.blockNumber,

@@ -3,10 +3,15 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { ArrowRight, Zap, Shield, Clock, Wallet } from "lucide-react"
+import { InstallPrompt } from "@/components/pwa/install-prompt"
+import { OfflineIndicator } from "@/components/pwa/offline-indicator"
 
 export default function HomePage() {
   return (
     <div className="container mx-auto px-4 py-12">
+      <InstallPrompt />
+      <OfflineIndicator />
+
       {/* Hero Section */}
       <section className="text-center py-20">
         <div className="max-w-3xl mx-auto">

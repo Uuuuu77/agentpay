@@ -8,7 +8,6 @@ export async function GET() {
     // Check database connection
     const result = await sql`SELECT 1 as health_check`
 
-    // Check environment variables
     const requiredEnvs = ["DATABASE_URL", "PAYEE_ADDRESS", "ALCHEMY_API_KEY"]
 
     const missingEnvs = requiredEnvs.filter((env) => !process.env[env])

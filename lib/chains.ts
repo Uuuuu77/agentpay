@@ -4,7 +4,7 @@ export const supportedChains: ChainConfig[] = [
   {
     id: 1,
     name: "Ethereum",
-    rpcUrl: process.env.ETHEREUM_RPC_URL || "",
+    rpcUrl: "https://ethereum.publicnode.com",
     blockExplorer: "https://etherscan.io",
     nativeCurrency: {
       name: "Ethereum",
@@ -19,7 +19,7 @@ export const supportedChains: ChainConfig[] = [
   {
     id: 137,
     name: "Polygon",
-    rpcUrl: process.env.POLYGON_RPC_URL || "",
+    rpcUrl: "https://polygon-rpc.com",
     blockExplorer: "https://polygonscan.com",
     nativeCurrency: {
       name: "Polygon",
@@ -34,7 +34,7 @@ export const supportedChains: ChainConfig[] = [
   {
     id: 56,
     name: "BSC",
-    rpcUrl: process.env.BSC_RPC_URL || "",
+    rpcUrl: "https://bsc-dataseed1.binance.org",
     blockExplorer: "https://bscscan.com",
     nativeCurrency: {
       name: "BNB",
@@ -49,7 +49,7 @@ export const supportedChains: ChainConfig[] = [
   {
     id: 43114,
     name: "Avalanche",
-    rpcUrl: process.env.AVALANCHE_RPC_URL || "",
+    rpcUrl: "https://api.avax.network/ext/bc/C/rpc",
     blockExplorer: "https://snowtrace.io",
     nativeCurrency: {
       name: "Avalanche",
@@ -59,6 +59,21 @@ export const supportedChains: ChainConfig[] = [
     tokens: {
       USDC: "0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E",
       USDT: "0x9702230A8Ea53601f5cD2dc00fDBc13d4dF4A8c7",
+    },
+  },
+  {
+    id: 8453,
+    name: "Base",
+    rpcUrl: "https://mainnet.base.org",
+    blockExplorer: "https://basescan.org",
+    nativeCurrency: {
+      name: "Ethereum",
+      symbol: "ETH",
+      decimals: 18,
+    },
+    tokens: {
+      USDC: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+      USDT: "0xfde4C96c8593536E31F229EA8f37b2ADa2699bb2",
     },
   },
 ]
@@ -77,6 +92,8 @@ export const getContractAddress = (chainId: number): string => {
       return process.env.NEXT_PUBLIC_BSC_CONTRACT || ""
     case 43114:
       return process.env.NEXT_PUBLIC_AVALANCHE_CONTRACT || ""
+    case 8453:
+      return process.env.NEXT_PUBLIC_BASE_CONTRACT || ""
     default:
       return ""
   }
