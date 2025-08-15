@@ -6,7 +6,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ProtectedRoute } from "@/components/auth/protected-route"
-import { ClientOnlyWrapper } from "@/components/auth/client-only-wrapper"
 import {
   Activity,
   Users,
@@ -18,12 +17,8 @@ import {
   Server,
   Database,
   Zap,
-  RefreshCw,
 } from "lucide-react"
 import axios from "axios"
-
-// Force dynamic rendering
-export const dynamic = 'force-dynamic'
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "/api"
 
@@ -41,14 +36,8 @@ interface AdminStats {
   }
 }
 
-function AdminDashboardContent() {
-  const { data: session, status } = useSession()
-
-  // Handle loading and authentication states
-  if (status === "loading" || !session) {
-    return null
-  }
-
+export default function AdminDashboard() {
+  const { data: session } = useSession()
   const [stats, setStats] = useState<AdminStats>({
     totalUsers: 0,
     totalOrders: 0,
@@ -354,13 +343,5 @@ function AdminDashboardContent() {
         )}
       </div>
     </ProtectedRoute>
-  )
-}
-
-export default function AdminDashboard() {
-  return (
-    <ClientOnlyWrapper>
-      <AdminDashboardContent />
-    </ClientOnlyWrapper>
   )
 }

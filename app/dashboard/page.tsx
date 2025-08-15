@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { ProtectedRoute } from "@/components/auth/protected-route"
-import { ClientOnlyWrapper } from "@/components/auth/client-only-wrapper"
 import {
   User,
   Wallet,
@@ -22,9 +21,6 @@ import {
 import axios from "axios"
 import type { Invoice } from "@/types"
 
-// Force dynamic rendering
-export const dynamic = 'force-dynamic'
-
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "/api"
 
 interface DashboardStats {
@@ -34,7 +30,7 @@ interface DashboardStats {
   totalSpent: number
 }
 
-function DashboardPageContent() {
+export default function DashboardPage() {
   const { data: session } = useSession()
   const [stats, setStats] = useState<DashboardStats>({
     totalOrders: 0,
@@ -240,13 +236,13 @@ function DashboardPageContent() {
                         <div className="flex items-center gap-3">
                           {getStatusIcon(order.status)}
                           <div>
-                            <p className="font-medium">{order.serviceType}</p>
+                            <p className="font-medium">{order.service?.name || order.serviceType}</p>
                             <p className="text-sm text-muted-foreground">{order.description}</p>
                           </div>
                         </div>
                         <div className="flex items-center gap-3">
                           <Badge className={getStatusColor(order.status)}>{order.status}</Badge>
-                          <span className="font-medium">${order.amount}</span>
+                          <span className="font-medium">${order.displayAmount}</span>
                           {order.deliverableURL && (
                             <Button size="sm" variant="outline" asChild>
                               <a href={order.deliverableURL} target="_blank" rel="noopener noreferrer">
@@ -265,13 +261,5 @@ function DashboardPageContent() {
         </div>
       </div>
     </ProtectedRoute>
-  )
-}
-
-export default function DashboardPage() {
-  return (
-    <ClientOnlyWrapper>
-      <DashboardPageContent />
-    </ClientOnlyWrapper>
   )
 }

@@ -8,40 +8,20 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { ProtectedRoute } from "@/components/auth/protected-route"
-import { ClientOnlyWrapper } from "@/components/auth/client-only-wrapper"
 import { Search, Eye, CheckCircle, XCircle, Clock, AlertTriangle, RefreshCw } from "lucide-react"
 import axios from "axios"
 import Link from "next/link"
 import type { Invoice } from "@/types"
 
-// Force dynamic rendering
-export const dynamic = 'force-dynamic'
-
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "/api"
 
-function AdminOrdersPageContent() {
-  const { data: session, status } = useSession()
+export default function AdminOrdersPage() {
+  const { data: session } = useSession()
   const [orders, setOrders] = useState<Invoice[]>([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState("")
   const [statusFilter, setStatusFilter] = useState("all")
   const [serviceFilter, setServiceFilter] = useState("all")
-
-  // Handle loading and authentication states
-  if (status === "loading") {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <RefreshCw className="h-8 w-8 animate-spin mx-auto mb-4" />
-          <p>Loading...</p>
-        </div>
-      </div>
-    )
-  }
-
-  if (!session) {
-    return null
-  }
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -214,7 +194,7 @@ function AdminOrdersPageContent() {
                     <div>
                       <CardTitle className="text-lg flex items-center gap-2">
                         {getStatusIcon(order.status)}
-                        {order.serviceType}
+                        {order.service?.name || order.serviceType}
                       </CardTitle>
                       <CardDescription className="mt-1">{order.description}</CardDescription>
                     </div>
@@ -225,7 +205,7 @@ function AdminOrdersPageContent() {
                   <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-4 text-sm mb-4">
                     <div>
                       <span className="font-medium text-muted-foreground">Amount:</span>
-                      <p className="font-semibold">${order.amount}</p>
+                      <p className="font-semibold">${order.displayAmount}</p>
                     </div>
                     <div>
                       <span className="font-medium text-muted-foreground">Chain:</span>
@@ -233,7 +213,7 @@ function AdminOrdersPageContent() {
                     </div>
                     <div>
                       <span className="font-medium text-muted-foreground">User:</span>
-                      <p className="font-mono text-xs">{order.payer || "N/A"}</p>
+                      <p className="font-mono text-xs">{order.userId || "N/A"}</p>
                     </div>
                     <div>
                       <span className="font-medium text-muted-foreground">Created:</span>
@@ -274,13 +254,5 @@ function AdminOrdersPageContent() {
         )}
       </div>
     </ProtectedRoute>
-  )
-}
-
-export default function AdminOrdersPage() {
-  return (
-    <ClientOnlyWrapper>
-      <AdminOrdersPageContent />
-    </ClientOnlyWrapper>
   )
 }
