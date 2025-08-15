@@ -98,5 +98,11 @@ export async function generateStaticParams() {
     { serviceType: "prompt" },
     { serviceType: "resume" },
     { serviceType: "consult" },
+    { serviceType: "website" },
+    { serviceType: "email" },
+    { serviceType: "linkedin" },
+    { serviceType: "data" },
+    { serviceType: "bugfix" },
+    { serviceType: "saas" },
   ]
 }

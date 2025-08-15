@@ -6,6 +6,12 @@ import { ScriptService } from "./script-service"
 import { PromptService } from "./prompt-service"
 import { ResumeService } from "./resume-service"
 import { ConsultService } from "./consult-service"
+import { WebsiteService } from "./website-service"
+import { EmailService } from "./email-service"
+import { LinkedInService } from "./linkedin-service"
+import { DataService } from "./data-service"
+import { BugfixService } from "./bugfix-service"
+import { SaasService } from "./saas-service"
 import { FileStorageService } from "./file-storage"
 import { InvoiceStatus, ServiceType } from "../../types"
 import type { Invoice } from "../../types"
@@ -29,6 +35,12 @@ export class ServiceProcessor {
       [ServiceType.PROMPT, new PromptService(this.fileStorage)],
       [ServiceType.RESUME, new ResumeService(this.fileStorage)],
       [ServiceType.CONSULT, new ConsultService(this.fileStorage)],
+      [ServiceType.WEBSITE, new WebsiteService(this.fileStorage)],
+      [ServiceType.EMAIL, new EmailService(this.fileStorage)],
+      [ServiceType.LINKEDIN, new LinkedInService(this.fileStorage)],
+      [ServiceType.DATA, new DataService(this.fileStorage)],
+      [ServiceType.BUGFIX, new BugfixService(this.fileStorage)],
+      [ServiceType.SAAS, new SaasService(this.fileStorage)],
     ])
   }
 

@@ -38,8 +38,8 @@ export enum ServiceType {
   SCRIPT = "SCRIPT",
   PROMPT = "PROMPT",
   RESUME = "RESUME",
-  BUGFIX = "BUGFIX",
   CONSULT = "CONSULT",
+  BUGFIX = "BUGFIX",
   WEBSITE = "WEBSITE",
   EMAIL = "EMAIL",
   LINKEDIN = "LINKEDIN",
@@ -64,6 +64,31 @@ export interface ServiceOptions {
   integration?: string
   targetModel?: string
   tone?: string
+  sections?: number
+  animations?: boolean
+  mobileOptimization?: boolean
+  industry?: string
+  emailCount?: number
+  templates?: boolean
+  automation?: string
+  personalization?: boolean
+  contentStrategy?: boolean
+  postTemplates?: number
+  networking?: boolean
+  dataSize?: string
+  visualizations?: number
+  insights?: boolean
+  dashboard?: boolean
+  complexity?: string
+  codeReview?: boolean
+  testing?: boolean
+  documentation?: boolean
+  technology?: string
+  pitchDeck?: boolean
+  businessPlan?: boolean
+  mvpSpecs?: boolean
+  marketingStrategy?: boolean
+  financialModel?: boolean
   [key: string]: any
 }
 
