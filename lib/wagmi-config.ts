@@ -1,53 +1,38 @@
-import { createConfig, http } from "wagmi"
-import { mainnet, polygon, bsc, avalanche, base } from "wagmi/chains"
-import { coinbaseWallet, metaMask, walletConnect, injected } from "wagmi/connectors"
+import { http, createConfig } from "wagmi"
+import { mainnet, polygon, bsc, avalanche, base, arbitrum, optimism } from "wagmi/chains"
+import { walletConnect, injected, coinbaseWallet, safe } from "wagmi/connectors"
 
-const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || "demo-project-id"
+const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || "bf2e795f-c0ef-4c3d-8136-1371dd9725d3"
 
-export const wagmiConfig = createConfig({
-  chains: [mainnet, polygon, bsc, avalanche, base],
+export const config = createConfig({
+  chains: [mainnet, polygon, bsc, avalanche, base, arbitrum, optimism],
   connectors: [
-    metaMask(),
-    coinbaseWallet({
-      appName: "AgentPay",
-      appLogoUrl: "/logo.png",
-    }),
-    walletConnect({
+    injected(), // MetaMask, Brave, etc.
+    walletConnect({ 
       projectId,
       metadata: {
         name: "AgentPay",
-        description: "Autonomous freelancer agent platform",
-        url: process.env.NEXT_PUBLIC_SITE_URL || "https://v0-agent-pay.vercel.app",
-        icons: ["/logo.png"],
+        description: "Autonomous freelancer agent platform with crypto payments",
+        url: process.env.NEXTAUTH_URL || "https://v0-agent-pay.vercel.app",
+        icons: ["/placeholder-logo.png"],
       },
     }),
-    injected({
-      target: () => ({
-        id: "binance",
-        name: "Binance Wallet",
-        provider: typeof window !== "undefined" ? (window as any).BinanceChain : undefined,
-      }),
+    coinbaseWallet({ 
+      appName: "AgentPay",
+      appLogoUrl: "/placeholder-logo.png",
     }),
-    injected({
-      target: () => ({
-        id: "trust",
-        name: "Trust Wallet",
-        provider: typeof window !== "undefined" ? (window as any).trustWallet : undefined,
-      }),
-    }),
-    injected({
-      target: () => ({
-        id: "okx",
-        name: "OKX Wallet",
-        provider: typeof window !== "undefined" ? (window as any).okxwallet : undefined,
-      }),
-    }),
+    safe(),
   ],
   transports: {
-    [mainnet.id]: http(process.env.ETHEREUM_RPC_URL),
-    [polygon.id]: http(process.env.POLYGON_RPC_URL),
-    [bsc.id]: http(process.env.BSC_RPC_URL),
-    [avalanche.id]: http(process.env.AVALANCHE_RPC_URL),
-    [base.id]: http(process.env.BASE_RPC_URL),
+    [mainnet.id]: http(),
+    [polygon.id]: http(),
+    [bsc.id]: http(),
+    [avalanche.id]: http(),
+    [base.id]: http(),
+    [arbitrum.id]: http(),
+    [optimism.id]: http(),
   },
 })
+
+// Backward compatibility
+export const wagmiConfig = config

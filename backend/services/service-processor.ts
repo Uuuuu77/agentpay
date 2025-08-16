@@ -28,20 +28,19 @@ export class ServiceProcessor {
     this.fileStorage = new FileStorageService()
 
     // Initialize service handlers
-    this.services = new Map([
-      [ServiceType.LOGO, new LogoService(this.fileStorage)],
-      [ServiceType.GRAPHIC, new GraphicService(this.fileStorage)],
-      [ServiceType.SCRIPT, new ScriptService(this.fileStorage)],
-      [ServiceType.PROMPT, new PromptService(this.fileStorage)],
-      [ServiceType.RESUME, new ResumeService(this.fileStorage)],
-      [ServiceType.CONSULT, new ConsultService(this.fileStorage)],
-      [ServiceType.WEBSITE, new WebsiteService(this.fileStorage)],
-      [ServiceType.EMAIL, new EmailService(this.fileStorage)],
-      [ServiceType.LINKEDIN, new LinkedInService(this.fileStorage)],
-      [ServiceType.DATA, new DataService(this.fileStorage)],
-      [ServiceType.BUGFIX, new BugfixService(this.fileStorage)],
-      [ServiceType.SAAS, new SaasService(this.fileStorage)],
-    ])
+    this.services = new Map()
+    this.services.set(ServiceType.LOGO, new LogoService(this.fileStorage))
+    this.services.set(ServiceType.GRAPHIC, new GraphicService())
+    this.services.set(ServiceType.SCRIPT, new ScriptService(this.fileStorage))
+    this.services.set(ServiceType.PROMPT, new PromptService(this.fileStorage))
+    this.services.set(ServiceType.RESUME, new ResumeService(this.fileStorage))
+    this.services.set(ServiceType.CONSULT, new ConsultService())
+    this.services.set(ServiceType.WEBSITE, new WebsiteService(this.fileStorage))
+    this.services.set(ServiceType.EMAIL, new EmailService(this.fileStorage))
+    this.services.set(ServiceType.LINKEDIN, new LinkedInService(this.fileStorage))
+    this.services.set(ServiceType.DATA, new DataService(this.fileStorage))
+    this.services.set(ServiceType.BUGFIX, new BugfixService(this.fileStorage))
+    this.services.set(ServiceType.SAAS, new SaasService(this.fileStorage))
   }
 
   async processInvoice(invoice: Invoice): Promise<void> {
@@ -77,7 +76,7 @@ export class ServiceProcessor {
     } catch (error) {
       console.error(`Failed to process service for invoice ${invoice.invoiceId}:`, error)
 
-      // Update status to indicate failure (you might want a FAILED status)
+      // Update status to indicate failure
       await this.db.updateInvoiceStatus(invoice.invoiceId, InvoiceStatus.CREATED)
 
       throw error
@@ -88,16 +87,48 @@ export class ServiceProcessor {
     try {
       const pendingInvoices = await this.db.getInvoicesByStatus(InvoiceStatus.PAID)
 
+      console.log(`Processing ${pendingInvoices.length} pending invoices`)
+
       for (const invoice of pendingInvoices) {
         try {
           await this.processInvoice(invoice)
+          
+          // Add small delay between processing to avoid rate limits
+          await new Promise(resolve => setTimeout(resolve, 1000))
         } catch (error) {
           console.error(`Failed to process invoice ${invoice.invoiceId}:`, error)
           // Continue processing other invoices
         }
       }
+
+      console.log(`Finished processing pending invoices`)
     } catch (error) {
       console.error("Failed to process pending invoices:", error)
+    }
+  }
+
+  async getProcessingStats(): Promise<{
+    total: number
+    inProgress: number
+    delivered: number
+    failed: number
+  }> {
+    try {
+      const [paid, inProgress, delivered] = await Promise.all([
+        this.db.getInvoicesByStatus(InvoiceStatus.PAID),
+        this.db.getInvoicesByStatus(InvoiceStatus.IN_PROGRESS),
+        this.db.getInvoicesByStatus(InvoiceStatus.DELIVERED),
+      ])
+
+      return {
+        total: paid.length + inProgress.length + delivered.length,
+        inProgress: inProgress.length,
+        delivered: delivered.length,
+        failed: 0
+      }
+    } catch (error) {
+      console.error("Failed to get processing stats:", error)
+      return { total: 0, inProgress: 0, delivered: 0, failed: 0 }
     }
   }
 }
