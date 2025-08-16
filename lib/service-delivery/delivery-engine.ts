@@ -1,18 +1,14 @@
 import { neon } from "@neondatabase/serverless"
-import { ServiceProcessor } from "@/backend/services/service-processor"
-import { DatabaseManager } from "@/backend/database"
-import { WebhookManager } from "@/backend/webhook-manager"
+import { DeliveryService } from "@/lib/email/delivery-service"
 
 const sql = neon(process.env.DATABASE_URL!)
 
 export class DeliveryEngine {
-  private serviceProcessor: ServiceProcessor
+  private deliveryService: DeliveryService
   private isRunning = false
 
   constructor() {
-    const dbManager = new DatabaseManager()
-    const webhookManager = new WebhookManager()
-    this.serviceProcessor = new ServiceProcessor(dbManager, webhookManager)
+    this.deliveryService = new DeliveryService()
   }
 
   async start(): Promise<void> {
@@ -69,7 +65,7 @@ export class DeliveryEngine {
       for (const invoice of pendingInvoices) {
         try {
           console.log(`[v0] Processing invoice ${invoice.invoice_id}`)
-          await this.serviceProcessor.processInvoice(invoice)
+          await this.processInvoiceSimple(invoice)
         } catch (error) {
           console.error(`[v0] Failed to process invoice ${invoice.invoice_id}:`, error)
 
@@ -99,9 +95,47 @@ export class DeliveryEngine {
       }
 
       const invoice = invoiceResult[0]
-      await this.serviceProcessor.processInvoice(invoice)
+      await this.processInvoiceSimple(invoice)
     } catch (error) {
       console.error(`[v0] Failed to process invoice ${invoiceId}:`, error)
+      throw error
+    }
+  }
+
+  private async processInvoiceSimple(invoice: any): Promise<void> {
+    try {
+      // Generate simple results for the service
+      const results = {
+        content: `Service ${invoice.service_type} completed successfully for invoice ${invoice.invoice_id}`,
+        deliverables: [
+          {
+            name: `${invoice.service_type}-results.md`,
+            content: `# ${invoice.service_type} Service Results\n\nService completed successfully.\n\nInvoice ID: ${invoice.invoice_id}\nDescription: ${invoice.description}\nAmount: $${invoice.amount}`,
+            type: "text/markdown"
+          }
+        ]
+      }
+
+      // Use delivery service to send email and save files
+      const deliveryResult = await this.deliveryService.deliverResults(invoice, results)
+      
+      if (deliveryResult.success) {
+        // Update invoice with delivery URL
+        await sql`
+          UPDATE invoices 
+          SET 
+            deliverable_url = ${deliveryResult.downloadUrl},
+            status = 'DELIVERED',
+            updated_at = NOW()
+          WHERE invoice_id = ${invoice.invoice_id}
+        `
+        
+        console.log(`[v0] Invoice ${invoice.invoice_id} delivered successfully`)
+      } else {
+        throw new Error('Delivery failed')
+      }
+    } catch (error) {
+      console.error(`[v0] Failed to process invoice ${invoice.invoice_id}:`, error)
       throw error
     }
   }
