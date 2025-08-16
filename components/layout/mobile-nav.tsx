@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { SimpleThemeToggle } from "@/components/theme/theme-toggle"
 import Link from "next/link"
 import { useSession } from "next-auth/react"
 
@@ -71,7 +72,12 @@ export function MobileNav() {
             </Link>
           )}
           
-          <div className="pt-4 mt-4 border-t">
+          <div className="pt-4 mt-4 border-t flex items-center justify-between">
+            <span className="text-sm font-medium">Theme</span>
+            <SimpleThemeToggle />
+          </div>
+          
+          <div className="pt-2">
             <Button 
               asChild 
               className="w-full bg-gradient-orange hover:shadow-orange-lg touch-button"

@@ -62,6 +62,19 @@ const config: Config = {
   				'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
   				border: 'hsl(var(--sidebar-border))',
   				ring: 'hsl(var(--sidebar-ring))'
+  			},
+  			orange: {
+  				50: 'hsl(var(--orange-50))',
+  				100: 'hsl(var(--orange-100))',
+  				200: 'hsl(var(--orange-200))',
+  				300: 'hsl(var(--orange-300))',
+  				400: 'hsl(var(--orange-400))',
+  				500: 'hsl(var(--orange-500))',
+  				600: 'hsl(var(--orange-600))',
+  				700: 'hsl(var(--orange-700))',
+  				800: 'hsl(var(--orange-800))',
+  				900: 'hsl(var(--orange-900))',
+  				950: 'hsl(var(--orange-950))'
   			}
   		},
   		borderRadius: {

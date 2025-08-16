@@ -11,83 +11,99 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
+    --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
+    --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    /* Updated primary colors to dark orange theme */
-    --primary: 25 95% 53%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 24 95% 53%;
     --primary-foreground: 0 0% 98%;
-    --secondary: 25 100% 97%;
-    --secondary-foreground: 25 95% 53%;
-    --muted: 25 100% 97%;
-    --muted-foreground: 0 0% 45.1%;
-    /* Updated accent to complementary amber */
-    --accent: 45 93% 47%;
-    --accent-foreground: 0 0% 9%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222.2 84% 4.9%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222.2 84% 4.9%;
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    /* Updated ring color to match primary */
-    --ring: 25 95% 53%;
-    /* Updated chart colors to orange/amber palette */
-    --chart-1: 25 95% 53%;
-    --chart-2: 45 93% 47%;
-    --chart-3: 35 91% 65%;
-    --chart-4: 15 86% 58%;
-    --chart-5: 55 91% 77%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 24 95% 53%;
+    --chart-1: 24 95% 53%;
+    --chart-2: 20 91% 48%;
+    --chart-3: 27 96% 61%;
+    --chart-4: 17 88% 40%;
+    --chart-5: 31 97% 72%;
     --radius: 0.5rem;
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
-    /* Updated sidebar colors to match orange theme */
-    --sidebar-primary: 25 95% 53%;
+    --sidebar-primary: 24 95% 53%;
     --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 25 100% 97%;
-    --sidebar-accent-foreground: 25 95% 53%;
+    --sidebar-accent: 210 40% 96%;
+    --sidebar-accent-foreground: 222.2 84% 4.9%;
     --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 25 95% 53%;
+    --sidebar-ring: 24 95% 53%;
+    
+    /* Orange color scale */
+    --orange-50: 33 100% 96%;
+    --orange-100: 34 100% 92%;
+    --orange-200: 32 98% 83%;
+    --orange-300: 31 97% 72%;
+    --orange-400: 27 96% 61%;
+    --orange-500: 24 95% 53%;
+    --orange-600: 20 91% 48%;
+    --orange-700: 17 88% 40%;
+    --orange-800: 15 79% 34%;
+    --orange-900: 15 75% 28%;
+    --orange-950: 15 80% 15%;
   }
+  
   .dark {
-    /* Updated dark mode background to dark gray */
-    --background: 0 0% 7%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 7%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 7%;
-    --popover-foreground: 0 0% 98%;
-    /* Updated dark mode primary to bright orange */
-    --primary: 25 95% 53%;
-    --primary-foreground: 0 0% 9%;
-    /* Updated dark mode secondary to darker orange tint */
-    --secondary: 25 25% 15%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 25 25% 15%;
-    --muted-foreground: 0 0% 63.9%;
-    /* Updated dark mode accent to amber */
-    --accent: 45 93% 47%;
-    --accent-foreground: 0 0% 98%;
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 24 95% 53%;
+    --primary-foreground: 222.2 84% 4.9%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 25 25% 15%;
-    --input: 25 25% 15%;
-    --ring: 25 95% 53%;
-    /* Updated dark mode chart colors */
-    --chart-1: 25 95% 53%;
-    --chart-2: 45 93% 47%;
-    --chart-3: 35 91% 65%;
-    --chart-4: 15 86% 58%;
-    --chart-5: 55 91% 77%;
-    /* Updated dark mode sidebar colors */
-    --sidebar-background: 25 25% 8%;
-    --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 25 95% 53%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 25 25% 15%;
-    --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 25 25% 15%;
-    --sidebar-ring: 25 95% 53%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 24 95% 53%;
+    --chart-1: 24 95% 53%;
+    --chart-2: 20 91% 48%;
+    --chart-3: 27 96% 61%;
+    --chart-4: 17 88% 40%;
+    --chart-5: 31 97% 72%;
+    --sidebar-background: 217.2 32.6% 17.5%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 24 95% 53%;
+    --sidebar-primary-foreground: 210 40% 98%;
+    --sidebar-accent: 217.2 32.6% 17.5%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 217.2 32.6% 17.5%;
+    --sidebar-ring: 24 95% 53%;
+    
+    /* Orange color scale for dark mode (inverted) */
+    --orange-50: 15 80% 15%;
+    --orange-100: 15 75% 28%;
+    --orange-200: 15 79% 34%;
+    --orange-300: 17 88% 40%;
+    --orange-400: 20 91% 48%;
+    --orange-500: 24 95% 53%;
+    --orange-600: 27 96% 61%;
+    --orange-700: 31 97% 72%;
+    --orange-800: 32 98% 83%;
+    --orange-900: 34 100% 92%;
+    --orange-950: 33 100% 96%;
   }
 }
 

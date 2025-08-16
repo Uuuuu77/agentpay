@@ -270,6 +270,65 @@ const ENHANCED_SERVICES = {
     },
     estimatedDelivery: "6-12 hours",
     category: "Development & Tech"
+  },
+
+  SOCIAL_MEDIA: {
+    name: "AI Social Media Manager",
+    basePrice: 95,
+    description: "Complete social media management package with content calendar, posts, and engagement strategy",
+    deliverables: [
+      "30-day content calendar",
+      "60 ready-to-post content pieces",
+      "Custom hashtag strategy",
+      "Engagement optimization guide",
+      "Brand voice guidelines",
+      "Analytics tracking setup"
+    ],
+    options: {
+      platforms: {
+        type: "multiselect" as const,
+        label: "Social Media Platforms",
+        options: ["Instagram", "Twitter/X", "LinkedIn", "Facebook", "TikTok", "YouTube Shorts"],
+        priceModifier: 15 // Additional platform cost
+      },
+      contentStyle: {
+        type: "select" as const,
+        label: "Content Style",
+        options: ["Professional & Corporate", "Casual & Friendly", "Trendy & Modern", "Educational", "Inspirational"],
+        priceModifier: { "Professional & Corporate": 0, "Casual & Friendly": 0, "Trendy & Modern": 10, "Educational": 5, "Inspirational": 5 }
+      },
+      contentTypes: {
+        type: "multiselect" as const,
+        label: "Content Types",
+        options: ["Regular Posts", "Stories Content", "Reels/Videos", "Carousel Posts", "Interactive Polls", "Quote Graphics"],
+        priceModifier: 8 // Per content type
+      },
+      brandAssets: {
+        type: "boolean" as const,
+        label: "Brand Asset Creation",
+        description: "Custom graphics, templates, and visual elements",
+        priceModifier: 25
+      },
+      competitorAnalysis: {
+        type: "boolean" as const,
+        label: "Competitor Analysis",
+        description: "Analyze top 5 competitors with insights",
+        priceModifier: 20
+      },
+      hashtagResearch: {
+        type: "select" as const,
+        label: "Hashtag Research",
+        options: ["Basic (50 hashtags)", "Advanced (150+ hashtags)", "Premium (300+ hashtags)"],
+        priceModifier: { "Basic (50 hashtags)": 0, "Advanced (150+ hashtags)": 15, "Premium (300+ hashtags)": 30 }
+      },
+      urgentDelivery: {
+        type: "boolean" as const,
+        label: "Rush Delivery (2-3 days)",
+        priceModifier: 40
+      }
+    },
+    estimatedDelivery: "4-5 days",
+    category: "Marketing & Content"
   }
 }
 
@@ -283,7 +342,7 @@ interface ServiceGridProps {
 export function ServiceGrid({ 
   onServiceSelect, 
   compact = false, 
-  featuredServices = ['CONSULTATION', 'PROMPT', 'LOGO'],
+  featuredServices = ['CONSULTATION', 'PROMPT', 'LOGO', 'DATA', 'WEBSITE', 'SOCIAL_MEDIA'],
   className = ""
 }: ServiceGridProps) {
   return (
@@ -312,7 +371,7 @@ export function FeaturedServiceGrid({
   onServiceSelect?: (serviceType: string, options: Record<string, any>) => void
   className?: string
 }) {
-  const featuredServices = ['CONSULTATION', 'PROMPT', 'LOGO']
+  const featuredServices = ['CONSULTATION', 'PROMPT', 'LOGO', 'DATA', 'WEBSITE', 'SOCIAL_MEDIA']
   
   return (
     <div className={`grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 ${className}`}>

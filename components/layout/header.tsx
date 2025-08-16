@@ -5,6 +5,7 @@ import { useSession, signOut } from "next-auth/react"
 import { WalletConnectButton } from "@/components/wallet/wallet-connect-button"
 import { ChainSelector } from "@/components/wallet/chain-selector"
 import { MobileNav } from "@/components/layout/mobile-nav"
+import { ThemeToggle } from "@/components/theme/theme-toggle"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -62,6 +63,7 @@ export function Header() {
           {isConnected && <ChainSelector />}
           
           <div className="hidden sm:flex items-center gap-3">
+            <ThemeToggle />
             <WalletConnectButton />
             
             {session?.user ? (

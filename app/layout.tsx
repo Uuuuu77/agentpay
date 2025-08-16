@@ -5,6 +5,7 @@ import { GeistMono } from "geist/font/mono"
 import "./globals.css"
 import { Web3Provider } from "@/components/providers/web3-provider"
 import { AuthProvider } from "@/components/auth/auth-provider"
+import { ThemeProvider } from "@/components/theme/theme-provider"
 import { DynamicHeader } from "@/components/layout/dynamic-header"
 import { Toaster } from "sonner"
 
@@ -37,7 +38,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
@@ -56,12 +57,14 @@ html {
         `}</style>
       </head>
       <body>
-        <AuthProvider>
-          <Web3Provider>
-            <DynamicHeader />
-            <main className="min-h-screen">{children}</main>
-          </Web3Provider>
-        </AuthProvider>
+        <ThemeProvider defaultTheme="system" storageKey="agentpay-theme">
+          <AuthProvider>
+            <Web3Provider>
+              <DynamicHeader />
+              <main className="min-h-screen bg-background text-foreground">{children}</main>
+            </Web3Provider>
+          </AuthProvider>
+        </ThemeProvider>
         <script
           dangerouslySetInnerHTML={{
             __html: `
