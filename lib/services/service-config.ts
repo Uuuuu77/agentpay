@@ -75,8 +75,8 @@ export const SERVICE_CONFIGS = {
         type: "select" as const,
         label: "Target AI Model",
         description: "Which AI model will use this prompt?",
-        options: Object.keys(AI_MODELS).flatMap(provider => 
-          Object.keys(AI_MODELS[provider])
+        options: Object.keys(AI_MODELS).flatMap(providerKey => 
+          Object.keys(AI_MODELS[providerKey as keyof typeof AI_MODELS])
         ),
         priceModifier: 0
       },
@@ -392,7 +392,7 @@ export function calculateServicePrice(
   let totalPrice = config.basePrice
 
   Object.entries(options).forEach(([key, value]) => {
-    const option = config.options[key]
+    const option = (config.options as any)[key]
     if (!option) return
 
     if (typeof option.priceModifier === 'number') {
@@ -402,7 +402,7 @@ export function calculateServicePrice(
         totalPrice += option.priceModifier * value.length
       }
     } else if (typeof option.priceModifier === 'object' && value in option.priceModifier) {
-      totalPrice += option.priceModifier[value]
+      totalPrice += (option.priceModifier as any)[value]
     }
   })
 
@@ -419,7 +419,7 @@ export function getModelForService(
   if (modelPreference) {
     for (const provider of Object.values(AI_MODELS)) {
       if (modelPreference in provider) {
-        return provider[modelPreference]
+        return (provider as any)[modelPreference]
       }
     }
   }

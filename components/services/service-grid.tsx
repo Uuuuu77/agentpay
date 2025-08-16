@@ -379,7 +379,7 @@ export function FeaturedServiceGrid({
         <EnhancedServiceCard
           key={serviceType}
           serviceType={serviceType}
-          serviceConfig={ENHANCED_SERVICES[serviceType]}
+          serviceConfig={ENHANCED_SERVICES[serviceType as keyof typeof ENHANCED_SERVICES]}
           onSelect={onServiceSelect}
           featured={true}
           compact={true}
