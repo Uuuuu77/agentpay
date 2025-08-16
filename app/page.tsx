@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge"
 import { ArrowRight, Zap, Shield, Clock, Wallet } from "lucide-react"
 import { InstallPrompt } from "@/components/pwa/install-prompt"
 import { OfflineIndicator } from "@/components/pwa/offline-indicator"
+import { FeaturedServiceGrid } from "@/components/services/service-grid"
 
 export default function HomePage() {
   return (
@@ -97,144 +98,18 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Popular Services */}
+      {/* Featured Services */}
       <section className="py-20">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold mb-4">Featured Services</h2>
-          <p className="text-muted-foreground">Premium AI-powered services for businesses and professionals.</p>
+          <p className="text-muted-foreground">Premium AI-powered services with advanced model selection and dynamic pricing.</p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Card className="hover:shadow-orange transition-all duration-300 border-orange-200">
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle>SaaS Startup Kit</CardTitle>
-                <Badge className="bg-orange-100 text-orange-800">$150+</Badge>
-              </div>
-              <CardDescription>Complete startup package with pitch deck and business plan</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul className="text-sm text-muted-foreground space-y-1">
-                <li>• Professional pitch deck</li>
-                <li>• Business plan & MVP specs</li>
-                <li>• Market analysis</li>
-                <li>• 7-day delivery</li>
-              </ul>
-              <Button asChild className="w-full mt-4" size="sm">
-                <Link href="/services/saas">Order Now</Link>
-              </Button>
-            </CardContent>
-          </Card>
-
-          <Card className="hover:shadow-orange transition-all duration-300">
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle>Data Analysis</CardTitle>
-                <Badge variant="secondary">$95+</Badge>
-              </div>
-              <CardDescription>Professional data analysis with insights and visualizations</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul className="text-sm text-muted-foreground space-y-1">
-                <li>• Statistical analysis</li>
-                <li>• Professional charts</li>
-                <li>• AI-powered insights</li>
-                <li>• 4-day delivery</li>
-              </ul>
-              <Button asChild className="w-full mt-4" size="sm">
-                <Link href="/services/data">Order Now</Link>
-              </Button>
-            </CardContent>
-          </Card>
-
-          <Card className="hover:shadow-orange transition-all duration-300">
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle>Landing Page</CardTitle>
-                <Badge variant="secondary">$85+</Badge>
-              </div>
-              <CardDescription>Custom responsive landing page with modern design</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul className="text-sm text-muted-foreground space-y-1">
-                <li>• HTML/CSS/JS files</li>
-                <li>• Mobile responsive</li>
-                <li>• SEO optimized</li>
-                <li>• 5-day delivery</li>
-              </ul>
-              <Button asChild className="w-full mt-4" size="sm">
-                <Link href="/services/website">Order Now</Link>
-              </Button>
-            </CardContent>
-          </Card>
-
-          <Card className="hover:shadow-orange transition-all duration-300">
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle>Bug Fix & Review</CardTitle>
-                <Badge variant="secondary">$75+</Badge>
-              </div>
-              <CardDescription>Professional debugging and code optimization</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul className="text-sm text-muted-foreground space-y-1">
-                <li>• Code debugging</li>
-                <li>• Full code review</li>
-                <li>• Test cases included</li>
-                <li>• 3-day delivery</li>
-              </ul>
-              <Button asChild className="w-full mt-4" size="sm">
-                <Link href="/services/bugfix">Order Now</Link>
-              </Button>
-            </CardContent>
-          </Card>
-
-          <Card className="hover:shadow-orange transition-all duration-300">
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle>LinkedIn Makeover</CardTitle>
-                <Badge variant="secondary">$65+</Badge>
-              </div>
-              <CardDescription>Complete LinkedIn profile optimization</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul className="text-sm text-muted-foreground space-y-1">
-                <li>• Profile optimization</li>
-                <li>• Content strategy</li>
-                <li>• Post templates</li>
-                <li>• 2-day delivery</li>
-              </ul>
-              <Button asChild className="w-full mt-4" size="sm">
-                <Link href="/services/linkedin">Order Now</Link>
-              </Button>
-            </CardContent>
-          </Card>
-
-          <Card className="hover:shadow-orange transition-all duration-300">
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle>Email Marketing</CardTitle>
-                <Badge variant="secondary">$55+</Badge>
-              </div>
-              <CardDescription>Complete email marketing campaign series</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul className="text-sm text-muted-foreground space-y-1">
-                <li>• Email sequences</li>
-                <li>• HTML templates</li>
-                <li>• A/B test recommendations</li>
-                <li>• 3-day delivery</li>
-              </ul>
-              <Button asChild className="w-full mt-4" size="sm">
-                <Link href="/services/email">Order Now</Link>
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
+        <FeaturedServiceGrid className="mb-8" />
 
         <div className="text-center mt-8">
           <Button asChild variant="outline">
-            <Link href="/services">View All 12 Services</Link>
+            <Link href="/services">View All Services</Link>
           </Button>
         </div>
       </section>

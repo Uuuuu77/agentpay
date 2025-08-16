@@ -23,7 +23,7 @@ export default function AboutPage() {
       {/* Founder Section */}
       <section className="py-20">
         <div className="max-w-4xl mx-auto">
-          <Card className="p-8">
+          <Card className="p-8 shadow-orange">
             <div className="grid md:grid-cols-2 gap-8 items-center">
               <div>
                 <div className="w-48 h-48 mx-auto md:mx-0 rounded-full bg-gradient-orange p-1">
@@ -36,7 +36,7 @@ export default function AboutPage() {
               </div>
               <div>
                 <h2 className="text-3xl font-bold mb-4">John Njuguna</h2>
-                <Badge className="mb-4">Founder & Lead Engineer</Badge>
+                <Badge className="mb-4 bg-gradient-orange">Founder & Lead Engineer</Badge>
                 <p className="text-muted-foreground mb-6">
                   John Njuguna is a visionary software engineer and entrepreneur passionate about the intersection 
                   of AI, blockchain technology, and the future of work. With extensive experience in full-stack 
@@ -45,7 +45,7 @@ export default function AboutPage() {
                 </p>
                 <div className="flex gap-4">
                   <Button variant="outline" size="sm" asChild>
-                    <Link href="https://github.com/johnnjuguna" target="_blank">
+                    <Link href="https://github.com/Uuuuu77" target="_blank">
                       <Github className="w-4 h-4 mr-2" />
                       GitHub
                     </Link>
@@ -74,28 +74,28 @@ export default function AboutPage() {
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-12">Our Mission</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Card className="text-center p-6">
+            <Card className="text-center p-6 hover:shadow-orange transition-all duration-300">
               <Zap className="w-12 h-12 text-primary mx-auto mb-4" />
               <h3 className="font-semibold mb-2">Instant Delivery</h3>
               <p className="text-sm text-muted-foreground">
                 Eliminate waiting times with AI-powered service automation
               </p>
             </Card>
-            <Card className="text-center p-6">
+            <Card className="text-center p-6 hover:shadow-orange transition-all duration-300">
               <Code className="w-12 h-12 text-primary mx-auto mb-4" />
               <h3 className="font-semibold mb-2">Quality Assured</h3>
               <p className="text-sm text-muted-foreground">
                 Professional-grade outputs powered by advanced AI models
               </p>
             </Card>
-            <Card className="text-center p-6">
+            <Card className="text-center p-6 hover:shadow-orange transition-all duration-300">
               <Users className="w-12 h-12 text-primary mx-auto mb-4" />
               <h3 className="font-semibold mb-2">Accessible</h3>
               <p className="text-sm text-muted-foreground">
                 High-quality services available 24/7 to everyone
               </p>
             </Card>
-            <Card className="text-center p-6">
+            <Card className="text-center p-6 hover:shadow-orange transition-all duration-300">
               <Target className="w-12 h-12 text-primary mx-auto mb-4" />
               <h3 className="font-semibold mb-2">Transparent</h3>
               <p className="text-sm text-muted-foreground">
@@ -110,7 +110,7 @@ export default function AboutPage() {
       <section className="py-20">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-12">What AgentPay Does</h2>
-          <Card className="p-8">
+          <Card className="p-8 shadow-orange">
             <CardContent className="prose max-w-none">
               <p className="text-lg leading-relaxed mb-6">
                 AgentPay is the world's first autonomous freelancer agent platform that combines artificial 
@@ -141,7 +141,7 @@ export default function AboutPage() {
                   <li>• Bug Fixing & Code Review</li>
                   <li>• SaaS Startup Kit</li>
                   <li>• Content Writing</li>
-                  <li>• Technical Consultation</li>
+                  <li>• Technical Consultation (Free AI Research Buddy)</li>
                 </ul>
               </div>
 
@@ -152,6 +152,42 @@ export default function AboutPage() {
               </p>
             </CardContent>
           </Card>
+        </div>
+      </section>
+
+      {/* Technology Stack */}
+      <section className="py-20">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-12">Technology Stack</h2>
+          <div className="grid md:grid-cols-3 gap-6">
+            <Card className="text-center p-6 hover:shadow-orange transition-all duration-300">
+              <div className="w-16 h-16 bg-gradient-orange rounded-full flex items-center justify-center mx-auto mb-4">
+                <Code className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="font-semibold mb-2">AI & Machine Learning</h3>
+              <p className="text-sm text-muted-foreground">
+                OpenAI GPT-4, Google Gemini, Groq LLaMA, Custom AI Agents
+              </p>
+            </Card>
+            <Card className="text-center p-6 hover:shadow-orange transition-all duration-300">
+              <div className="w-16 h-16 bg-gradient-orange rounded-full flex items-center justify-center mx-auto mb-4">
+                <Zap className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="font-semibold mb-2">Blockchain & Web3</h3>
+              <p className="text-sm text-muted-foreground">
+                Ethereum, Polygon, BSC, Base, Arbitrum, USDC/USDT payments
+              </p>
+            </Card>
+            <Card className="text-center p-6 hover:shadow-orange transition-all duration-300">
+              <div className="w-16 h-16 bg-gradient-orange rounded-full flex items-center justify-center mx-auto mb-4">
+                <Users className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="font-semibold mb-2">Modern Web Stack</h3>
+              <p className="text-sm text-muted-foreground">
+                Next.js 15, TypeScript, Tailwind CSS, Neon Database, Vercel
+              </p>
+            </Card>
+          </div>
         </div>
       </section>
 

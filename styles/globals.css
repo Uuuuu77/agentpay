@@ -88,3 +88,152 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  /* Enhanced Service Card Styles */
+  .service-card {
+    @apply relative overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-orange-100/50;
+  }
+  
+  .service-card-featured {
+    @apply ring-2 ring-orange-500/20 shadow-lg shadow-orange-100/50;
+  }
+  
+  .service-card-header {
+    @apply relative z-10 pb-4;
+  }
+  
+  .service-card-badge {
+    @apply absolute -top-2 -right-2 z-20 shadow-sm;
+  }
+  
+  .service-option-group {
+    @apply space-y-3 p-4 bg-slate-50/50 rounded-lg border border-slate-100;
+  }
+  
+  .service-price-display {
+    @apply font-bold text-lg tracking-tight;
+  }
+  
+  .service-delivery-time {
+    @apply flex items-center text-sm text-muted-foreground;
+  }
+  
+  .service-deliverable-item {
+    @apply flex items-start text-sm text-gray-600;
+  }
+  
+  .service-deliverable-check {
+    @apply h-4 w-4 text-green-500 flex-shrink-0 mt-0.5;
+  }
+  
+  /* AI Model Selection Styles */
+  .ai-model-selector {
+    @apply rounded-lg border-2 border-transparent transition-all duration-200 hover:border-orange-200;
+  }
+  
+  .ai-model-selected {
+    @apply border-orange-500 bg-orange-50;
+  }
+  
+  .ai-model-info {
+    @apply text-xs text-gray-500 mt-1;
+  }
+  
+  /* Dynamic Pricing Styles */
+  .price-breakdown {
+    @apply space-y-2 text-sm;
+  }
+  
+  .price-breakdown-item {
+    @apply flex justify-between items-center;
+  }
+  
+  .price-breakdown-base {
+    @apply font-medium;
+  }
+  
+  .price-breakdown-option {
+    @apply text-gray-600;
+  }
+  
+  .price-breakdown-total {
+    @apply font-bold text-lg border-t pt-2 mt-2;
+  }
+  
+  /* Service Category Styles */
+  .category-badge {
+    @apply px-2 py-1 text-xs font-medium rounded-full;
+  }
+  
+  .category-ai {
+    @apply bg-blue-100 text-blue-800;
+  }
+  
+  .category-design {
+    @apply bg-purple-100 text-purple-800;
+  }
+  
+  .category-analytics {
+    @apply bg-green-100 text-green-800;
+  }
+  
+  .category-development {
+    @apply bg-orange-100 text-orange-800;
+  }
+  
+  .category-research {
+    @apply bg-gray-100 text-gray-800;
+  }
+  
+  /* Enhanced Button Styles */
+  .service-cta-button {
+    @apply w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-orange-200 active:scale-95;
+  }
+  
+  .service-cta-free {
+    @apply bg-green-500 hover:bg-green-600;
+  }
+  
+  /* Service Grid Responsive */
+  .service-grid {
+    @apply grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3;
+  }
+  
+  .service-grid-compact {
+    @apply grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4;
+  }
+  
+  /* Loading States */
+  .service-card-loading {
+    @apply animate-pulse bg-gray-100 rounded-lg h-96;
+  }
+  
+  .service-option-loading {
+    @apply animate-pulse bg-gray-100 rounded h-10 w-full;
+  }
+  
+  /* Mobile Optimizations */
+  @media (max-width: 640px) {
+    .service-card {
+      @apply mx-2;
+    }
+    
+    .service-option-group {
+      @apply p-3;
+    }
+    
+    .service-cta-button {
+      @apply py-4 text-base;
+    }
+  }
+  
+  /* Enhanced Hover Effects */
+  .service-card:hover .service-card-header {
+    @apply transform translate-y-[-2px];
+  }
+  
+  .service-card:hover .service-cta-button {
+    @apply transform translate-y-[-1px];
+  }
+}
