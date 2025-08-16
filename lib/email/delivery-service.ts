@@ -1,4 +1,4 @@
-import nodemailer from "nodemailer"
+import { getEmailService, EmailAttachment } from "@/lib/email/unified-email-service"
 import archiver from "archiver"
 import fs from "fs"
 import path from "path"
@@ -22,18 +22,10 @@ interface DeliverableFile {
 }
 
 export class DeliveryService {
-  private transporter: nodemailer.Transporter
+  private emailService = getEmailService()
 
   constructor() {
-    this.transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: parseInt(process.env.SMTP_PORT || '587'),
-      secure: process.env.SMTP_SECURE === 'true',
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-    })
+    // Email service is now handled by unified service
   }
 
   async deliverResults(invoice: Invoice, results: any) {
@@ -269,61 +261,33 @@ Thank you for using AgentPay!
   private async sendDeliveryEmail(invoice: Invoice, zipBuffer: Buffer) {
     const recipientEmail = invoice.buyerContact || `${invoice.payer}@placeholder.com`
     
-    const mailOptions = {
-      from: process.env.SMTP_FROM || "AgentPay <noreply@agentpay.com>",
-      to: recipientEmail,
-      subject: `Your ${invoice.serviceType} service is ready! - Invoice #${invoice.invoiceId.slice(0, 8)}`,
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <div style="background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%); padding: 20px; text-align: center;">
-            <h1 style="color: white; margin: 0; font-size: 24px;">Service Delivered Successfully! 🎉</h1>
-          </div>
-          
-          <div style="padding: 30px; background-color: #f9f9f9;">
-            <p style="font-size: 16px; margin-bottom: 20px;">
-              Your <strong>${invoice.serviceType}</strong> service has been completed and is ready for download.
-            </p>
-            
-            <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0;">
-              <h3 style="margin-top: 0; color: #333;">Service Details</h3>
-              <p><strong>Service:</strong> ${invoice.description}</p>
-              <p><strong>Invoice ID:</strong> ${invoice.invoiceId}</p>
-              <p><strong>Amount:</strong> $${invoice.amount}</p>
-              <p><strong>Delivered:</strong> ${new Date().toLocaleString()}</p>
-            </div>
-            
-            <p style="font-size: 16px; margin-bottom: 20px;">
-              All files are attached to this email. You can also download them from your AgentPay dashboard.
-            </p>
-            
-            <div style="text-align: center; margin: 30px 0;">
-              <a href="${process.env.NEXTAUTH_URL}/dashboard" 
-                 style="background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%); 
-                        color: white; padding: 12px 24px; text-decoration: none; 
-                        border-radius: 6px; font-weight: bold; display: inline-block;">
-                View Dashboard
-              </a>
-            </div>
-            
-            <div style="border-top: 1px solid #ddd; padding-top: 20px; margin-top: 30px; text-align: center;">
-              <p style="color: #666; font-size: 14px;">
-                Thank you for using AgentPay! <br>
-                Questions? Contact us at <a href="mailto:support@agentpay.com">support@agentpay.com</a>
-              </p>
-            </div>
-          </div>
-        </div>
-      `,
-      attachments: [
-        {
-          filename: `AgentPay-${invoice.serviceType}-${Date.now()}.zip`,
-          content: zipBuffer,
-          contentType: "application/zip"
-        }
-      ]
+    const attachments: EmailAttachment[] = [
+      {
+        filename: `AgentPay-${invoice.serviceType}-${Date.now()}.zip`,
+        content: zipBuffer,
+        contentType: "application/zip"
+      }
+    ]
+
+    const emailContext = {
+      serviceType: invoice.serviceType,
+      description: invoice.description,
+      invoiceId: invoice.invoiceId,
+      amount: invoice.amount.toString(),
+      deliveredAt: new Date().toLocaleString(),
+      dashboardUrl: `${process.env.NEXTAUTH_URL}/dashboard`,
+      attachments
     }
 
-    await this.transporter.sendMail(mailOptions)
+    const success = await this.emailService.sendEmail(
+      'service_delivery',
+      { to: recipientEmail },
+      emailContext
+    )
+
+    if (!success) {
+      throw new Error('Failed to send delivery email')
+    }
   }
 
   private async saveFilesForDownload(invoiceId: string, files: DeliverableFile[], zipBuffer: Buffer): Promise<string> {
@@ -343,12 +307,6 @@ Thank you for using AgentPay!
   }
 
   async testEmailConnection(): Promise<boolean> {
-    try {
-      await this.transporter.verify()
-      return true
-    } catch (error) {
-      console.error("Email connection test failed:", error)
-      return false
-    }
+    return await this.emailService.testConnection()
   }
 }

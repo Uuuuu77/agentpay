@@ -1,10 +1,11 @@
 import type { ServiceDefinition } from "@/types"
 
 export const serviceCategories = {
+  "Free Services": ["CONSULT"],
   "Design & Creative": ["LOGO", "GRAPHIC", "WEBSITE"],
   "Development & Technical": ["SCRIPT", "BUGFIX", "DATA"],
   "Marketing & Growth": ["EMAIL", "LINKEDIN", "SAAS"],
-  "Professional Services": ["RESUME", "CONSULT", "PROMPT"],
+  "Professional Services": ["RESUME", "PROMPT"],
 }
 
 export const getServiceCategory = (serviceType: string): string => {
@@ -27,6 +28,7 @@ export const getServicesByCategory = (services: ServiceDefinition[], category: s
 
 export const getPopularityScore = (serviceType: string): number => {
   const popularityMap: Record<string, number> = {
+    CONSULT: 12,  // Boost free service
     SAAS: 10,
     DATA: 9,
     WEBSITE: 8,
@@ -36,7 +38,6 @@ export const getPopularityScore = (serviceType: string): number => {
     EMAIL: 4,
     LINKEDIN: 3,
     RESUME: 2,
-    CONSULT: 1,
     GRAPHIC: 1,
     PROMPT: 1,
   }

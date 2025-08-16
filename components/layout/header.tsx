@@ -35,6 +35,15 @@ export function Header() {
             <Link href="/services" className="text-sm font-medium hover:text-primary transition-colors">
               Services
             </Link>
+            <Link 
+              href="/services/consultation" 
+              className="text-sm font-medium hover:text-primary transition-colors flex items-center gap-1"
+            >
+              Free Research
+              <span className="bg-green-100 text-green-800 text-xs px-2 py-0.5 rounded-full font-medium">
+                FREE
+              </span>
+            </Link>
             {session?.user && (
               <Link href="/dashboard" className="text-sm font-medium hover:text-primary transition-colors">
                 Dashboard

@@ -124,4 +124,6 @@ export interface ServiceDefinition {
   }
   deliverables: string[]
   slaHours: number
+  badge?: string
+  maxPerDay?: number
 }

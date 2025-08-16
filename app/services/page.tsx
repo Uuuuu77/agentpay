@@ -17,13 +17,15 @@ export default function ServicesPage() {
   const [sortBy, setSortBy] = useState("popularity")
 
   const serviceCategories = {
+    "Free Services": ["CONSULT"],
     "Design & Creative": ["LOGO", "GRAPHIC", "WEBSITE"],
     "Development & Technical": ["SCRIPT", "BUGFIX", "DATA"],
     "Marketing & Growth": ["EMAIL", "LINKEDIN", "SAAS"],
-    "Professional Services": ["RESUME", "CONSULT", "PROMPT"],
+    "Professional Services": ["RESUME", "PROMPT"],
   }
 
   const getServiceBadge = (serviceType: string) => {
+    if (serviceType === "CONSULT") return { label: "FREE", variant: "default" as const, icon: Star, color: "bg-green-100 text-green-800" }
     if (serviceType === "SAAS") return { label: "Best Value", variant: "default" as const, icon: TrendingUp }
     if (["DATA", "WEBSITE", "BUGFIX"].includes(serviceType))
       return { label: "Most Popular", variant: "secondary" as const, icon: Star }
@@ -169,7 +171,10 @@ export default function ServicesPage() {
               <Card key={service.type} className="hover:shadow-lg transition-all duration-300 relative group">
                 {badge && (
                   <div className="absolute -top-2 -right-2 z-10">
-                    <Badge variant={badge.variant} className="shadow-sm gap-1">
+                    <Badge 
+                      variant={badge.variant} 
+                      className={`shadow-sm gap-1 ${badge.color || ''}`}
+                    >
                       <badge.icon className="h-3 w-3" />
                       {badge.label}
                     </Badge>
@@ -178,7 +183,9 @@ export default function ServicesPage() {
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <CardTitle className="group-hover:text-primary transition-colors">{service.name}</CardTitle>
-                    <Badge variant="secondary">${service.basePrice}+</Badge>
+                    <Badge variant="secondary">
+                      {service.basePrice === 0 ? 'FREE' : `$${service.basePrice}+`}
+                    </Badge>
                   </div>
                   <CardDescription>{service.description}</CardDescription>
                 </CardHeader>

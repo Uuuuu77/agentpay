@@ -6,6 +6,7 @@ import "./globals.css"
 import { Web3Provider } from "@/components/providers/web3-provider"
 import { AuthProvider } from "@/components/auth/auth-provider"
 import { DynamicHeader } from "@/components/layout/dynamic-header"
+import { Toaster } from "sonner"
 
 export const metadata: Metadata = {
   title: "AgentPay - Autonomous Freelancer Agent Platform",
@@ -78,6 +79,7 @@ html {
             `,
           }}
         />
+        <Toaster richColors position="top-right" />
       </body>
     </html>
   )
